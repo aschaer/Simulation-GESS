@@ -1,5 +1,6 @@
 # MATLAB HS12 – Research Plan 
 
+WORK IN PROGRESS
 
 > * Group Name: (be creative!)
 > * Group participants names: Arner Flurin, Demicheli Samuele, Schaer Alessandro, Solcà Gerson
