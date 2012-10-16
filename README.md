@@ -2,8 +2,8 @@
 (text between brackets to be removed)
 
 > * Group Name: (be creative!)
-> * Group participants names: (alphabetically sorted by last name)
-> * Project Title: (can be changed)
+> * Group participants names: Arner Flurin, Demicheli Samuele, Schaer Alessandro, Solcà Gerson
+> * Project Title: Mensa optimization by queue separation(can be changed)
 
 ## General Introduction
 
