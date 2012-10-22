@@ -56,14 +56,14 @@ Probably, an "adaptive" speed of the employees could result a good compromise, b
 
 ## References 
 
-As suggested by Prof. K. Donnay we will use the work done by F. Berney, M.F. Lagadec and P. Neitzel,
+As suggested by K. Donnay we will use the work done by F. Berney, M.F. Lagadec and P. Neitzel,
 the one done by L. Nimeskern and A. Zwahlen (both May, 2011) and the one done by M. Vifian, M. Roggo and M. Aebli
 (December, 2011).
 
 
 ## Research Methods
 
-An Agent-Based Model was suggested by Prof. K. Donnay since the celluar automata approach does not lead to the 
+An Agent-Based Model was suggested by K. Donnay since the celluar automata approach does not lead to the 
 desired queue formation, which corresponds to the reality. We're going to try wathever is needed in order to get
 a realistic model of the considered system.
 
