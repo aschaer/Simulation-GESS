@@ -4,8 +4,8 @@
     function[]=Update_agents()
     %% Dichiarazione variabili
     % DESCRIPTIVE TEXT
-    Velocity_agent(_(t+deltat))=Velocity_agent(t)+Force_agent(t)*deltat;
-    Position_agent(_(t+deltat))=Position_agent(t)+Velocity_agent(t)*deltat+1/2*Force_agent(t)*deltat^2
+    Velocity_agent((t+deltat))=Velocity_agent(t)+Force_agent(t)*deltat;
+    Position_agent((t+deltat))=Position_agent(t)+Velocity_agent(t)*deltat+1/2*Force_agent(t)*deltat^2
 
     %% Ciclo Agenti
     % Ciclo che controlla tutti gli agenti

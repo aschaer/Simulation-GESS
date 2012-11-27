@@ -1,15 +1,13 @@
-clc
-clear all
-close all
-t=0:2.5*3600;
+function [p,ptot]=Prova_Gauss(t)
+%Time intervall
 deltat= t(length(t));
-%mu=deltat/2;
+%Mean value
 mu=1000;
+%Standard deviation
 sigma=1700;
+%Normalisation parameter
 A=2/3700;
-%p=A*(normpdf(t,mu,sigma)+1);
+%People function
 p=t.*A.*exp(-(t-mu).^2/(2*sigma^2));
+%Total people
 ptot=floor(sum(p));
-ptot
-figure 
-plot(t,p)

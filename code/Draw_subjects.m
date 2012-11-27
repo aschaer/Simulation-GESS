@@ -1,8 +1,6 @@
 %Disegna soggetti
 function []=Draw_subjects(people)
-%image=
 figure
-
 length_of_people=length(people);
 for j=1:length_of_people
     if(people(j))
