@@ -29,28 +29,25 @@ global desVel_x;
 global desVel_y;
 desVel_x = zeros(size(V_b));
 desVel_y = ones(size(V_b));
+%[desVel_x, desVel_y] = getVectors(V_b);
 
-disp('Computing total amount of agents...')
+fprintf('Computing total amount of agents...\n\n');
 
 % Vector contianing the arriving people as a gaussian distr. over time
 incoming_people = Arriving_people(t);
 
 % Total people coming during the whole time interval:
 tot_people = sum(incoming_people);
-disp(' ')
-disp('Total amount of agents is:')
-tot_people
-disp('over a time interval of ')
-t_F
-disp('seconds.')
-disp(' ')
+fprintf('Total amount of agents is: %.f\n',tot_people);
+
+fprintf('Over a time interval of %.f seconds.\n\n',t_F);
 
 % Define variable which we're interested in
 global walking_time;
 walking_time = zeros(tot_people,1);
 
 %% Agent Initialization
-disp('Initializing agents...')
+fprintf('Initializing agents...\n\n');
 % Initialize the agent Matrix AM:
 AM = init_agents(tot_people);
 % ELEMENTS OF agent_Matrix ARE VECTORS CONTAINING THE INFORMATION OF
@@ -65,17 +62,13 @@ AM = init_agents(tot_people);
 %                      ext_ti
 %                      des_v_xi
 %                      des_v_yi]
-disp('Initialization done.')
-disp(' ')
+fprintf('Initialization done.\n\n')
 
 %% Actual Simulation
-disp('#################')
-disp('Begin Simulation.')
-disp('#################')
-disp(' ')
-disp('Computing time iterations. Please be patient: the procedure')
-disp('may take some minutes...')
-disp(' ')
+fprintf('################# \nBegining Simulation. \n');
+fprintf('################# \n\n');
+fprintf('Computing time iterations. Please be patient: ');
+fprintf('the procedure \nmay take a few minutes...\n\n');
 
 % Initialize log matrix: each time step status gets saved here
 log_Matrix = cell(t_F+1,1);
@@ -115,17 +108,15 @@ end
 % Save the results in a separate file
 save('simulationResults.mat','log_Matrix','walking_time');
 
-disp('##########################')
-disp('Simulation done and saved.')
-disp('#########YEAH!############')
-disp('##########################')
-disp(' ')
+fprintf('########################## \nSimulation done and saved. \n');
+fprintf('#########YEAH!############ \n##########################\n\n ');
+
 
 %% Create Video of Simulation
 
 createVideo = true;
 if(createVideo)
-    disp('Creating video of the simulation. Please Wait...')
+    fprintf('Creating video of the simulation. Please Wait... \n');
     % Prepare objects
     fig = figure;
     movie = VideoWriter('MensaSimVideo.avi');
@@ -155,10 +146,9 @@ if(createVideo)
     close(fig);
     close(movie);
 
-    disp('Video has been created. Everything saved.')
+    fprintf('Video has been created. Everything saved. \n');
 else
-    disp('No video requested.')
-    disp(' ')
+    fprintf('No video requested. \n');
 end
 
 
