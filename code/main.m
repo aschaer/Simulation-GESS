@@ -28,7 +28,7 @@ y_goal = 700;
 global desVel_x;
 global desVel_y;
 desVel_x = zeros(size(V_b));
-desVel_y = zeros(size(V_b));
+desVel_y = ones(size(V_b));
 
 disp('Computing total amount of agents...')
 
@@ -123,16 +123,15 @@ disp(' ')
 
 %% Create Video of Simulation
 
-createVideo = false;
+createVideo = true;
 if(createVideo)
     disp('Creating video of the simulation. Please Wait...')
     % Prepare objects
     fig = figure;
-    movie = avifile('MensaSimVideo.avi');
-    movie.fps = 25;                             % => video Duration: 360s
+    movie = VideoWriter('MensaSimVideo.avi');
+    open(movie);
 
-
-    for time = 1:t_F+1
+    for time = 1:10:t_F+1
         image(V_b);
         colormap([1 1 1; .5 .5 .5; 0 0 0]);
         hold on;
@@ -150,11 +149,11 @@ if(createVideo)
         end
         hold off;
         F = getframe(fig);
-        movie = addframe(movie,F);
+        writeVideo(movie,F);
     end
 
     close(fig);
-    movie = close(movie);
+    close(movie);
 
     disp('Video has been created. Everything saved.')
 else
