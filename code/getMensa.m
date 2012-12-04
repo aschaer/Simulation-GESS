@@ -7,7 +7,7 @@ potential = double(C);
 
 % % 3D View
 % MensaMap = figure('Name','Mensa Polyterasse Model');
-% mesh(width, height, D)
+% mesh(width, height, potential)
 % colorbar
 % colormap([1 0 0; 0 1 0; 0 0 1]);
 % set(MensaMap,'Position',[67 380 560 420])
@@ -18,7 +18,7 @@ mesh(width, height, potential);
 view([0 0 1])
 colorbar
 colormap([1 1 1; .5 .5 .5; 0 0 0]);
-set(MensaContour,'Position',[627 380 560 420]);
+set(MensaContour,'Position',[400 380 560 420]);
 pause(3)
 close(MensaContour);
 end

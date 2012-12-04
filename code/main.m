@@ -27,9 +27,10 @@ y_goal = 700;
 % Desired velocity matrix
 global desVel_x;
 global desVel_y;
-desVel_x = zeros(size(V_b));
-desVel_y = ones(size(V_b));
-%[desVel_x, desVel_y] = getVectors(V_b);
+MensaSize = size(V_b);
+%desVel_x = zeros(MensaSize);
+%desVel_y = ones(MensaSize);
+[desVel_x, desVel_y] = getVectors(MensaSize);
 
 fprintf('Computing total amount of agents...\n\n');
 
@@ -65,7 +66,7 @@ AM = init_agents(tot_people);
 fprintf('Initialization done.\n\n')
 
 %% Actual Simulation
-fprintf('################# \nBegining Simulation. \n');
+fprintf('################# \nStarting Simulation. \n');
 fprintf('################# \n\n');
 fprintf('Computing time iterations. Please be patient: ');
 fprintf('the procedure \nmay take a few minutes...\n\n');
@@ -103,29 +104,35 @@ for i = 0:t_F-1;
    log_Matrix{i+1} = Update_agents(tot_people,AM,i,y_goal); 
    % {i+1} because the matrix indeces begin at 1 and not at 0 and i begins
    % at 0
+%   fprintf('Did Time Iteration # %.f\t of %.f seconds.\n',i+1,t_F);
 end
 
 % Save the results in a separate file
 save('simulationResults.mat','log_Matrix','walking_time');
 
 fprintf('########################## \nSimulation done and saved. \n');
-fprintf('#########YEAH!############ \n##########################\n\n ');
+fprintf('#########YEAH!############ \n########################## \n\n');
 
 
 %% Create Video of Simulation
 
 createVideo = true;
-if(createVideo)
+if createVideo
     fprintf('Creating video of the simulation. Please Wait... \n');
     % Prepare objects
     fig = figure;
+    set(gca,'Visible','off');
+%    set(fig,'Position',[400 380 560 420]);
     movie = VideoWriter('MensaSimVideo.avi');
     open(movie);
+    [width, height] = meshgrid(1:1000,1:1000);
+    colormap([1 1 1; .5 .5 .5; 0 0 0]);
 
-    for time = 1:10:t_F+1
-        image(V_b);
-        colormap([1 1 1; .5 .5 .5; 0 0 0]);
-        hold on;
+    % Create Movie
+    for time = 1:t_F+1
+        mesh(width, height, V_b);
+        view([0 0 1]);
+%        hold on;
         % Current agent Matrix
         AM = log_Matrix{time};
   
@@ -133,35 +140,23 @@ if(createVideo)
             % Plot position of each agent
             current_agent = AM(:,pers);
         
-            if (current_agent(1) ~=0 || current_agent(2) > 0)
-                plot(current_agent(2),current_agent(3),'o','LineWidth',5,...
+%            if (current_agent(1) ~=0 || current_agent(2) > 0)
+            if current_agent(2) > 0
+                    plot(current_agent(2),current_agent(3),'o','LineWidth',5,...
                     'Color',[0 0.7 0.7]);
             end
         end
-        hold off;
-        F = getframe(fig);
-        writeVideo(movie,F);
+%        hold off;
+        writeVideo(movie,getframe(gca));
+        fprintf('Did frame no. %.f\t of %.f frames. \n',time,t_F);
     end
 
-    close(fig);
-    close(movie);
+    close(gcf);
 
     fprintf('Video has been created. Everything saved. \n');
 else
     fprintf('No video requested. \n');
 end
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
