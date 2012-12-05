@@ -14,7 +14,7 @@ clear all; close all; clc;
 %% Parameters
 
 % Define the time interval in which we want to simulate
-t = 0:2.5*3600;             % -> We simulate 2.5 hours. Simulation step: 1s
+t = 0:2.5*500;             % -> We simulate 2.5 hours. Simulation step: 1s
 t_F = t(length(t));         % Final Time of Simulation
 
 % Potential boundary
@@ -104,13 +104,18 @@ for i = 0:t_F-1;
    log_Matrix{i+1} = Update_agents(tot_people,AM,i,y_goal); 
    % {i+1} because the matrix indeces begin at 1 and not at 0 and i begins
    % at 0
-%   fprintf('Did Time Iteration # %.f\t of %.f seconds.\n',i+1,t_F);
+   
+   % Print how far we are with the simulation.
+   % Just add a % at the beginning if you don't want to see this.
+   if mod( i+1, t_F/10 ) == 0
+        fprintf('%.f%%  ',100*((i+1)./t_F));
+   end
 end
 
 % Save the results in a separate file
 save('simulationResults.mat','log_Matrix','walking_time');
 
-fprintf('########################## \nSimulation done and saved. \n');
+fprintf('\n\n########################## \nSimulation done and saved. \n');
 fprintf('#########YEAH!############ \n########################## \n\n');
 
 
@@ -148,7 +153,14 @@ if createVideo
         end
 %        hold off;
         writeVideo(movie,getframe(gca));
+        
+        % Print how far we are with the video.
+        % Just add a % at the beginning if you don't want to see this.
         fprintf('Did frame no. %.f\t of %.f frames. \n',time,t_F);
+        
+%        if mod( time, (t_F+1)/100 ) == 0
+%            fprintf('%.f%%  ',1000*(time./(t_F+1)));
+%        end
     end
 
     close(gcf);
