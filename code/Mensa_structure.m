@@ -1,30 +1,25 @@
-n=21;
-h=h;
-MENSA=zeros(n,n);
-MENSA(1,1)=h;
-MENSA(1,n)=h;
-MENSA(2,1)=h;
-MENSA(2,n)=h;
-MENSA(3,1)=h;
-MENSA(3,n)=h;
-MENSA(4,1)=h;
-MENSA(4,n)=h;
-MENSA(5,1)=h;
-MENSA(5,n)=h;
+Size=4;
+Force=4;
+HorDiv = 4;
+Parts = floor(Size/HorDiv);
+A=zeros(Size);
 
-MENSA(6,:)=[h,h,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,h,h];
-MENSA(7,:)=[h,h,h,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,h,h,h];
-MENSA(8,:)=[h,h,h,h,0,0,0,0,0,0,0,0,0,0,0,0,0,h,h,h,h];
-MENSA(9,:)=[h,h,h,h,h,0,0,0,0,0,0,0,0,0,0,0,h,h,h,h,h];
-MENSA(10,:)=[h,h,h,h,h,h,0,h,h,h,0,h,h,h,0,h,h,h,h,h,h];
-MENSA(11,:)=[h,h,h,h,h,h,0,h,h,h,0,h,h,h,0,h,h,h,h,h,h];
-MENSA(12,:)=[h,h,h,h,h,h,0,h,h,h,0,h,h,h,0,h,h,h,h,h,h];
-MENSA(13,:)=[h,h,h,h,h,h,0,h,h,h,0,h,h,h,0,h,h,h,h,h,h];
-MENSA(14,:)=[h,h,h,h,h,h,0,h,h,h,0,h,h,h,0,h,h,h,h,h,h];
-MENSA(1h,:)=[h,h,h,h,h,h,0,h,h,h,0,h,h,h,0,h,h,h,h,h,h];
-MENSA(16,:)=[h,h,h,h,h,h,0,h,h,h,0,h,h,h,0,h,h,h,h,h,h];
-MENSA(17,:)=[h,h,h,h,h,h,0,h,h,h,0,h,h,h,0,h,h,h,h,h,h];
-MENSA(18,:)=[h,h,h,h,h,h,0,h,h,h,0,h,h,h,0,h,h,h,h,h,h];
-MENSA(19,:)=[h,h,h,h,h,h,0,h,h,h,0,h,h,h,0,h,h,h,h,h,h];
+%A(3,1)=floor(Force/1);
+%A(4,1)=floor(Force/2);
+%A(3,2)=floor(Force/2);
 
-surf(MENSA)
+
+for i = 1:Size/2
+    for j = 1:Parts
+        for m = 0:HorDiv/2-1
+            A(Size/2 + i, Parts*m + j) = floor(Force/(m+1));
+        end
+
+%        A(Size/2 + i, Parts*0 + j) = floor(Force);
+%        A(Size/2 + i, Parts*1 + j) = floor(Force);
+    end
+end
+
+
+%A(:, ((Size/2)+1) : Size) = -fliplr( A(:, 1:(Size/2) ) );
+%A(1: (Size/2) ,:) = -flipud( A( ((Size/2)+1) : Size ,:));

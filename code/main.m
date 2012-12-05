@@ -28,8 +28,8 @@ y_goal = 700;
 global desVel_x;
 global desVel_y;
 MensaSize = size(V_b);
-%desVel_x = zeros(MensaSize);
-%desVel_y = ones(MensaSize);
+
+fprintf('Getting Vectors...\n')
 [desVel_x, desVel_y] = getVectors(MensaSize);
 
 fprintf('Computing total amount of agents...\n\n');
