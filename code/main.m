@@ -14,7 +14,7 @@ clear all; close all; clc;
 %% Parameters
 
 % Define the time interval in which we want to simulate
-t = 0:2.5*500;             % -> We simulate 2.5 hours. Simulation step: 1s
+t = 0:600;             % -> We simulate 2.5 hours. Simulation step: 1s
 t_F = t(length(t));         % Final Time of Simulation
 
 % Potential boundary
@@ -27,6 +27,11 @@ y_goal = 700;
 % Desired velocity matrix
 global desVel_x;
 global desVel_y;
+% desVel_x = zeros(size(V_b));
+% desVel_y = 100*ones(size(V_b));
+
+% disp('Computing total amount of agents...')
+
 MensaSize = size(V_b);
 
 fprintf('Getting Vectors...\n')
@@ -54,7 +59,7 @@ AM = init_agents(tot_people);
 % ELEMENTS OF agent_Matrix ARE VECTORS CONTAINING THE INFORMATION OF
 % THE AGENT i
 %
-%   agent_Matrix(:,i) = [i 
+%   agent_Matrix(:,i) = [i          
 %                      Pos_xi
 %                      Pos_yi
 %                      v_xi
@@ -79,22 +84,31 @@ arrived_people = 0;
 
 for i = 0:t_F-1;
    % Update log:
-   arrived_people = sum(incoming_people(i+1));
-   arrived_people_new = arrived_people + incoming_people(i+2);
+    arrived_people = sum(incoming_people(1:i+1));
+    arrived_people_new = arrived_people + incoming_people(i+2);
+   
    
    % Make appear agents as suggested by incoming_people
    % RELEVANT AGENTS HAVE A x-POSITION UNEQUAL 0!
    if(arrived_people_new ~= arrived_people)
        % Set initial positions of new agents to valid position
-       for l = arrived_people+1:arrived_people_new+1
-            updatingAgent = AM(:,l);
-            % Initialize x-Position as 498,599,500 or 501 (in the middle of
-            % the mensa map along the x-Axis) 
-            updatingAgent(2) = 498+l-arrived_people;
+       for k = arrived_people+1:arrived_people_new;
+            updatingAgent = AM(:,k);
+            % Initialize x-Position as 499,500,501 or 502 (in the middle of
+            % the mensa map along the y=10-Axis) 
+            updatingAgent(2) = 498+k-arrived_people;
             
-            % y-Position can stay at 0
+            % y-Position to 10
+            updatingAgent(3) = 10;
             
-            % delete helping variable to be sure to not mess up anithing
+            % Set des velocity
+            updatingAgent(8) = desVel_x(updatingAgent(2),updatingAgent(3));
+            updatingAgent(9) = desVel_y(updatingAgent(2),updatingAgent(3));
+            % Rewrite AM(:,k)
+            
+            AM(:,k) = updatingAgent;
+             
+            % Delete helping variable to be sure to not mess up anything
             clear updatingAgent;     
        end
    end
@@ -105,11 +119,12 @@ for i = 0:t_F-1;
    % {i+1} because the matrix indeces begin at 1 and not at 0 and i begins
    % at 0
    
-   % Print how far we are with the simulation.
+    % Print how far we are with the simulation.
    % Just add a % at the beginning if you don't want to see this.
-   if mod( i+1, t_F/10 ) == 0
-        fprintf('%.f%%  ',100*((i+1)./t_F));
-   end
+    if mod( i+1, t_F/10 ) == 0
+         fprintf('%.f%% ',100*((i+1)./t_F));
+    end
+%   fprintf('Did frame no. %.f\t of %.f frames. \n',i,t_F);
 end
 
 % Save the results in a separate file
@@ -121,23 +136,22 @@ fprintf('#########YEAH!############ \n########################## \n\n');
 
 %% Create Video of Simulation
 
+close all;
 createVideo = true;
-if createVideo
-    fprintf('Creating video of the simulation. Please Wait... \n');
+if(createVideo)
+     fprintf('Creating video of the simulation. Please Wait... \n');
     % Prepare objects
-    fig = figure;
-    set(gca,'Visible','off');
-%    set(fig,'Position',[400 380 560 420]);
-    movie = VideoWriter('MensaSimVideo.avi');
-    open(movie);
-    [width, height] = meshgrid(1:1000,1:1000);
-    colormap([1 1 1; .5 .5 .5; 0 0 0]);
+     fig = figure;
+     vidObj = VideoWriter('MensaSimVideo.avi');
+     open(vidObj);
 
-    % Create Movie
-    for time = 1:t_F+1
-        mesh(width, height, V_b);
+    [width, height] = meshgrid(1:1000,1:1000);
+    
+    for time = 400:t_F
+        mesh(width,height,V_b);
+        colormap([1 1 1; .5 .5 .5; 0 0 0]);
         view([0 0 1]);
-%        hold on;
+        hold on;
         % Current agent Matrix
         AM = log_Matrix{time};
   
@@ -145,30 +159,46 @@ if createVideo
             % Plot position of each agent
             current_agent = AM(:,pers);
         
-%            if (current_agent(1) ~=0 || current_agent(2) > 0)
-            if current_agent(2) > 0
-                    plot(current_agent(2),current_agent(3),'o','LineWidth',5,...
-                    'Color',[0 0.7 0.7]);
+            if (current_agent(1) ~=0 || current_agent(3) > 5)
+                plot3(current_agent(2),current_agent(3),0,'o',...
+                    'LineWidth',10,'Color',[0 0.7 0.7]);
             end
         end
-%        hold off;
-        writeVideo(movie,getframe(gca));
+        hold off;
+        F = getframe(fig);
+        writeVideo(vidObj,F);
         
-        % Print how far we are with the video.
+                % Print how far we are with the video.
         % Just add a % at the beginning if you don't want to see this.
         fprintf('Did frame no. %.f\t of %.f frames. \n',time,t_F);
         
-%        if mod( time, (t_F+1)/100 ) == 0
-%            fprintf('%.f%%  ',1000*(time./(t_F+1)));
-%        end
+% if mod( time, (t_F+1)/100 ) == 0
+% fprintf('%.f%% ',1000*(time./(t_F+1)));
+% end
+        
     end
 
-    close(gcf);
+    close(vidObj);
+    close(fig);
 
     fprintf('Video has been created. Everything saved. \n');
 else
+ 
     fprintf('No video requested. \n');
+    
 end
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

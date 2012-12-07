@@ -7,6 +7,8 @@
 global walking_time;
 % Make potential available
 global V_b;
+global desVel_x;
+global desVel_y;
 
 % Iterate over all present agents:
     for i = 1:nOfPeople
@@ -39,8 +41,16 @@ global V_b;
                 updatingAgent(5) = updatingAgent(5) + force_y;
                 
                 % -> compute new position
-                updatingAgent(2) = updatingAgent(2) + updatingAgent(4);
-                updatingAgent(3) = updatingAgent(3) + updatingAgent(5);
+                updatingAgent(2) = updatingAgent(2) + updatingAgent(4) +...
+                    0.5*force_x;
+                updatingAgent(3) = updatingAgent(3) + updatingAgent(5) +...
+                    0.5*force_y;
+                
+%                 % Update Desired Velocity
+%             updatingAgent(8) = desVel_x(ceil(updatingAgent(2)),...
+%                 ceil(updatingAgent(3)));
+%             updatingAgent(9) = desVel_y(ceil(updatingAgent(2)),...
+%                 ceil(updatingAgent(3)));
                      
            % If after step, goal reached: Save walking time.
            if(updatingAgent(3) == y_goal)
@@ -50,7 +60,7 @@ global V_b;
                updatingAgent(1) = 0;
            end   
         end
-        
+        agent_Matrix(:,i) = updatingAgent;
         clear updatingAgent;
         
     end

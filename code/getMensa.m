@@ -22,7 +22,3 @@ set(MensaContour,'Position',[400 380 560 420]);
 pause(3)
 close(MensaContour);
 end
-
-
-
-
