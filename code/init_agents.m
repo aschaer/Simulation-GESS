@@ -1,7 +1,7 @@
 % Agent initializing function
-function agent_Matrix = init_agents(nOfPeople)
+function agent_Matrix = init_agents(tot_people)
     % Initialize Matrix as a empty array of structs
-    agent_Matrix = zeros(9,nOfPeople);
+    agent_Matrix = zeros(9,tot_people);
     
     % ELEMENTS OF agent_Matrix ARE VECTORS CONTAINING THE INFORMATION OF
     % THE AGENT i
@@ -17,7 +17,7 @@ function agent_Matrix = init_agents(nOfPeople)
     %                      des_v_y(i)]
  
     % Fill the agent_Matrix with ordered agents, i.e. set the ID's
-    for i = 1:nOfPeople;
+    for i = 1:tot_people;
         agent_Matrix(1,i) = i; 
     end
 

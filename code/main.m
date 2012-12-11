@@ -11,6 +11,9 @@
 
 clear all; close all; clc;
 
+% Images desired?
+visual = false;
+
 %% Parameters
 
 % Define the time interval in which we want to simulate
@@ -19,7 +22,7 @@ t_F = t(length(t));         % Final Time of Simulation
 
 % Potential boundary
 global V_b;
-V_b = getMensa();
+V_b = getMensa(visual);
 
 % Define treshold y value for goal (read plausible value from the map)
 y_goal = 700;
@@ -77,54 +80,55 @@ fprintf('Computing time iterations. Please be patient: ');
 fprintf('the procedure \nmay take a few minutes...\n\n');
 
 % Initialize log matrix: each time step status gets saved here
-log_Matrix = cell(t_F+1,1);
+log_Matrix = cell(t_F,1);
 
 % Log the arrived people
-arrived_people = 0;
+placed_people = 0;
 
-for i = 0:t_F-1;
-   % Update log:
-    arrived_people = sum(incoming_people(1:i+1));
-    arrived_people_new = arrived_people + incoming_people(i+2);
+for i = 1:t_F-1;
+    % Update log
+    placed_people = sum(incoming_people(1:i));
+    new_people = incoming_people(i+1);
+    new_and_placed_people = placed_people + new_people;
+    
+    % Create helping vector to place agents
+    placingAgent = zeros(9,1);
    
-   
-   % Make appear agents as suggested by incoming_people
-   % RELEVANT AGENTS HAVE A x-POSITION UNEQUAL 0!
-   if(arrived_people_new ~= arrived_people)
-       % Set initial positions of new agents to valid position
-       for k = arrived_people+1:arrived_people_new;
-            updatingAgent = AM(:,k);
-            % Initialize x-Position as 499,500,501 or 502 (in the middle of
-            % the mensa map along the y=10-Axis) 
-            updatingAgent(2) = 498+k-arrived_people;
+    % Make appear agents as suggested by incoming_people
+
+    % Set initial positions of new agents to valid position
+    for k = placed_people:new_and_placed_people;
+        % Already placed agents have an x-position different from 0!
+        if  k ~= 0 && AM(2,k) == 0
+            placingAgent = AM(:,k);
+            % Initialize x-Position as 496, 497, ..., 505 (in the middle of
+            % the mensa map along the y=10-Axis)
+            placingAgent(2) = 498 + floor( 9*rand(1) );
             
             % y-Position to 10
-            updatingAgent(3) = 10;
+            placingAgent(3) = 10;
             
             % Set des velocity
-            updatingAgent(8) = desVel_x(updatingAgent(2),updatingAgent(3));
-            updatingAgent(9) = desVel_y(updatingAgent(2),updatingAgent(3));
-            % Rewrite AM(:,k)
+            placingAgent(8) = desVel_x(placingAgent(2),placingAgent(3));
+            placingAgent(9) = desVel_y(placingAgent(2),placingAgent(3));
             
-            AM(:,k) = updatingAgent;
-             
-            % Delete helping variable to be sure to not mess up anything
-            clear updatingAgent;     
-       end
-   end
+            % Rewrite AM(:,k)
+            AM(:,k) = placingAgent;
+        end
+    end
    
-   % Compute and store timestep of relevant agents (Update_agents already
-   % knows which agents are relevant)
-   log_Matrix{i+1} = Update_agents(tot_people,AM,i,y_goal); 
-   % {i+1} because the matrix indeces begin at 1 and not at 0 and i begins
-   % at 0
+    % Compute and store timestep of relevant agents (Update_agents already
+    % knows which agents are relevant)
+    AM = Update_agents(new_and_placed_people,AM,i,y_goal); 
+%    log_Matrix{i} = AM;
+    % {i+1} because the matrix indeces begin at 1 and not at 0 and i begins
+    % at 0
    
     % Print how far we are with the simulation.
-   % Just add a % at the beginning if you don't want to see this.
+    % Just add a % at the beginning if you don't want to see this.
     if mod( i+1, t_F/10 ) == 0
          fprintf('%.f%% ',100*((i+1)./t_F));
     end
-%   fprintf('Did frame no. %.f\t of %.f frames. \n',i,t_F);
 end
 
 % Save the results in a separate file
@@ -136,18 +140,17 @@ fprintf('#########YEAH!############ \n########################## \n\n');
 
 %% Create Video of Simulation
 
-close all;
-createVideo = true;
-if(createVideo)
-     fprintf('Creating video of the simulation. Please Wait... \n');
+if visual
+    close all;
+    fprintf('Creating video of the simulation. Please Wait... \n');
     % Prepare objects
-     fig = figure;
-     vidObj = VideoWriter('MensaSimVideo.avi');
-     open(vidObj);
+    fig = figure;
+    vidObj = VideoWriter('MensaSimVideo.avi');
+    open(vidObj);
 
     [width, height] = meshgrid(1:1000,1:1000);
     
-    for time = 400:t_F
+    for time = 1:t_F
         mesh(width,height,V_b);
         colormap([1 1 1; .5 .5 .5; 0 0 0]);
         view([0 0 1]);
@@ -168,7 +171,7 @@ if(createVideo)
         F = getframe(fig);
         writeVideo(vidObj,F);
         
-                % Print how far we are with the video.
+        % Print how far we are with the video.
         % Just add a % at the beginning if you don't want to see this.
         fprintf('Did frame no. %.f\t of %.f frames. \n',time,t_F);
         
@@ -183,9 +186,7 @@ if(createVideo)
 
     fprintf('Video has been created. Everything saved. \n');
 else
- 
     fprintf('No video requested. \n');
-    
 end
 
 

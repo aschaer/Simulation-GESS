@@ -21,16 +21,16 @@ B_2 = 0.2;          %
 lamda = 0.75;       % anisotropic character of pedestrian interactions
 
 % Current agent
-curr_A = AM(:,ID);
-Pos_x = curr_A(2);
-Pos_y = curr_A(3);
-des_speed = [curr_A(8); curr_A(9)];         % Column Vector
+curr_Agent = AM(:,ID);
+Pos_x = curr_Agent(2);
+Pos_y = curr_Agent(3);
+des_speed = [curr_Agent(8); curr_Agent(9)];         % Column Vector
 
 % Desired force to goal
 deltat = 1;     % Equals Timestep
 
-Desired_force_x = curr_A(8)/deltat;
-Desired_force_y = curr_A(9)/deltat;
+Desired_force_x = curr_Agent(8)/deltat;
+Desired_force_y = curr_Agent(9)/deltat;
 
 % Repulsive force of Boundaries
 [boundF_xM,boundF_yM] = gradient(V_b);
