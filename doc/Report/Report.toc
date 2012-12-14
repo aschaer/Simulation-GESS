@@ -1,0 +1,33 @@
+\contentsline {section}{\numberline {1}Abstract}{5}
+\contentsline {section}{\numberline {2}Individual Contributions}{6}
+\contentsline {section}{\numberline {3}Introduction and Motivations}{7}
+\contentsline {subsection}{\numberline {3.1}The problem}{7}
+\contentsline {subsection}{\numberline {3.2}The purpose}{7}
+\contentsline {subsection}{\numberline {3.3}Result expectations}{7}
+\contentsline {section}{\numberline {4}Description of the Model}{9}
+\contentsline {subsection}{\numberline {4.1}The agents based model}{9}
+\contentsline {subsection}{\numberline {4.2}The social force model}{9}
+\contentsline {section}{\numberline {5}Implementation: The Game}{11}
+\contentsline {paragraph}{Calculation part}{11}
+\contentsline {paragraph}{Graphical part}{11}
+\contentsline {subsection}{\numberline {5.1}Canteen: the playground}{11}
+\contentsline {paragraph}{Calculation part}{11}
+\contentsline {paragraph}{Graphical part}{11}
+\contentsline {subsection}{\numberline {5.2}People: the players}{12}
+\contentsline {paragraph}{Calculation part}{12}
+\contentsline {paragraph}{Graphical part}{15}
+\contentsline {subsection}{\numberline {5.3}Forces: the rules}{15}
+\contentsline {paragraph}{Calculation part}{15}
+\contentsline {paragraph}{Graphical part}{15}
+\contentsline {section}{\numberline {6}Encountered Problems and Solutions}{16}
+\contentsline {subsection}{\numberline {6.1}The 1D Model}{17}
+\contentsline {paragraph}{Calculation Part}{17}
+\contentsline {paragraph}{Graphical part}{18}
+\contentsline {section}{\numberline {7}Simulation Results and Discussion}{19}
+\contentsline {subsection}{\numberline {7.1}Data analysis}{19}
+\contentsline {subsection}{\numberline {7.2}Discussion}{26}
+\contentsline {section}{\numberline {8}Summary and Outlook}{28}
+\contentsline {section}{\numberline {9}References}{29}
+\contentsline {section}{\numberline {10}Appendix A: 2D Model MatLab$^{\IeC {\textregistered }}$ code}{30}
+\contentsline {section}{\numberline {11}Appendix B: 1D Model MatLab$^{\IeC {\textregistered }}$ code}{45}
+\contentsline {section}{\numberline {12}Appendix C: Vectorfield generator}{56}

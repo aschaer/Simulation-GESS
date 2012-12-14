@@ -1,0 +1,42 @@
+%% Parameters
+
+fprintf('Setting up parameters and initializing everything needed...\n')
+
+t = 0:1800;                 % Time interval
+tF = t(length(t));          % Final time
+iter = length(t);           % # of time iterations
+arrP = arrivingPeople(t);   % Arriving people distribution
+totP = sum(arrP);           % tot # of people arriving in time interval
+                            % -> number of agents
+dimension = 0:1:1000;       % Possible position vector
+global walkingTime;         % Statistical value in which we are interested
+walkingTime = zeros(totP,1);
+global goal;
+goal = 900;                 % if the agent reaches this point, its journey 
+                            % will be considered complete
+global lengthOfFood;        
+lengthOfFood = 100;         % length of the region were you get the food
+                            % and pay for it.
+global startPointFood;
+startPointFood = 500;       % Position at which the food reception starts
+
+efficiency = 1;             % Selects velocity field
+
+global maxStop;             % Tuning parameter
+maxStop = 15;
+
+videoOn = true;             % Do you want a video?
+
+%% Force Parameters
+global A_1 A_2 B_1 B_2 lamda epsilon r m;
+A_1 = 3;            % interaction strength
+A_2 = 3; 
+B_1 = 1;            % range of repulsive interaction
+B_2 = 1;            %
+lamda = 0.75;       % anisotropic character of pedestrian interactions
+epsilon = 1.;       % In order to not divide by 0 
+r = 5;              % Radius of agent
+m = 1e15;           % Agent Mass (weights the influence of the force)
+
+
+

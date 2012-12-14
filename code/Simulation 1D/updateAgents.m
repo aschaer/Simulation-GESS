@@ -1,0 +1,69 @@
+function updAM = updateAgents(nOfPeople,AM,time,desVel)
+    global goal walkingTime m maxStop;
+    %       agent_i = [ID_i;x_i;v_i,v_des,t_in,t_out,counter]
+    %                    1   2   3   4     5    6       7
+
+    % Work with one agent at the time
+    for k = 1:nOfPeople
+        updatingAgent = AM(:,k);
+        tempStop = maxStop + 20*rand;
+        
+        if(updatingAgent(1) ~= 0 && updatingAgent(2) ~= 0)
+            % Check if agent has to stop for the food:
+            if ((updatingAgent(2) > 500 && updatingAgent(2) < 510)...
+                    && updatingAgent(7) < tempStop)
+                updatingAgent(7) = updatingAgent(7) + 1; 
+            elseif (updatingAgent(7) >= tempStop)
+                % If they got what they wanted, let them leave at constant
+                % velocity (simplification)
+                updatingAgent(3) = 10;
+                updatingAgent(2) = ceil(updatingAgent(2) + ...
+                    updatingAgent(3));
+                % Check if goal has been reached
+                if(updatingAgent(2) >= goal)
+                    updatingAgent(6) = time;
+                    walkingTime(k) = updatingAgent(6) - updatingAgent(5);
+                    updatingAgent(1) = 0;
+                end
+            else
+            % Compute forces
+            force = forceAgent(k,nOfPeople,AM);
+          
+            % Update state:
+            % VELOCITY (work with integers in order to avoid index confl.)
+            tempV = ceil(updatingAgent(3) + force/m);
+            % POSITION (has to be an integer)
+            tempX = ceil(updatingAgent(2) + ...
+                updatingAgent(3) + 0.5*force/m);
+            
+            % Make sure to not pass through person in front of you
+            if(k > 1)
+                if(tempX < AM(2,k-1) || AM(2,k-1) >= goal)
+                    updatingAgent(3) = tempV;
+                    updatingAgent(2) = tempX;
+                else
+                    updatingAgent(3) = tempV;
+                    updatingAgent(2) = updatingAgent(2) + 0.3*...
+                        abs(updatingAgent(2)-AM(2,k-1));
+                end
+            else
+                updatingAgent(3) = tempV;
+                updatingAgent(2) = tempX;
+            end
+            clear tempV tempX;     
+            
+            intPos = floor(updatingAgent(2));
+            if(intPos > 1000)
+                intPos=900;
+            end
+            updatingAgent(4) = desVel(intPos);
+            
+            end
+            clear tempStop;
+        end
+        AM(:,k) = updatingAgent;
+        clear updatingAgent;
+    end
+    
+    updAM = AM;
+end
